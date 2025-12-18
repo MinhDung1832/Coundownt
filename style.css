@@ -1,54 +1,215 @@
+:root {
+    --tet-red: #b31217;
+    --tet-dark: #1a0a0a;
+    --tet-gold: #ffdd57;
+    --tet-gold-deep: #e5b800;
+    --tet-shadow: rgba(0,0,0,0.5);
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #c31432, #240b36);
+    background: linear-gradient(135deg, var(--tet-red), var(--tet-dark));
     color: #fff;
     height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .countdown-container {
     text-align: center;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    background: rgba(26, 10, 10, 0.65);
+    padding: 32px 44px;
+    border-radius: 14px;
+    border: 2px solid var(--tet-gold);
+    box-shadow: 0 0 25px rgba(255, 221, 87, 0.15), 0 10px 30px var(--tet-shadow);
+    position: relative;
 }
 
 .countdown-container h1 {
     margin-bottom: 25px;
+    color: var(--tet-gold);
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 0 #8a6f1a, 0 0 12px rgba(255, 221, 87, 0.25);
+    background-image: linear-gradient(to right, transparent, rgba(255, 221, 87, 0.6), transparent);
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    background-position: 0 100%;
+    padding-bottom: 8px;
 }
 
 .countdown {
     display: flex;
     gap: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .time-box {
-    background: #111;
+    background: rgba(17, 17, 17, 0.75);
     padding: 20px;
-    border-radius: 10px;
-    min-width: 90px;
+    border-radius: 12px;
+    min-width: 100px;
+    border: 1px solid rgba(255, 221, 87, 0.45);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .time-box span {
     display: block;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: bold;
+    color: var(--tet-gold);
+    text-shadow: 0 0 10px rgba(255, 221, 87, 0.2);
 }
 
 .time-box label {
     margin-top: 8px;
     display: block;
     font-size: 14px;
-    opacity: 0.8;
+    color: #ffd9a0;
+    opacity: 0.95;
 }
 
 #message {
     margin-top: 20px;
     font-size: 18px;
-    color: #ffdd57;
+    color: var(--tet-gold);
+    text-shadow: 0 0 8px rgba(255, 221, 87, 0.2);
+}
+
+.christmas-banner {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(26, 10, 10, 0.45);
+    border: 1px solid rgba(255, 221, 87, 0.45);
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    margin-bottom: 16px;
+}
+.christmas-banner.visible {
+    display: flex;
+    animation: pulse-gold 1.4s ease-in-out infinite;
+}
+.christmas-banner .icon { font-size: 22px; color: var(--tet-gold); }
+#christmas-text { font-weight: 600; letter-spacing: 0.2px; }
+@keyframes pulse-gold {
+  0% { box-shadow: 0 0 0 rgba(255,221,87,0.0); }
+  50% { box-shadow: 0 0 18px rgba(255,221,87,0.35); }
+  100% { box-shadow: 0 0 0 rgba(255,221,87,0.0); }
+}
+
+.countdown-container::before,
+.countdown-container::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+    opacity: 0.25;
+    background: radial-gradient(circle at 30% 30%, var(--tet-gold), transparent 55%),
+                radial-gradient(circle at 70% 70%, #ff4d4f, transparent 60%),
+                radial-gradient(circle at 40% 70%, #ff9f0a, transparent 65%);
+    filter: blur(0.3px);
+    animation: float 8s ease-in-out infinite;
+}
+.countdown-container::before { top: -30px; left: -30px; transform: rotate(-8deg); }
+.countdown-container::after  { bottom: -30px; right: -30px; transform: rotate(8deg); animation-delay: 2s; }
+
+@keyframes float {
+    0%   { transform: translateY(0) rotate(0deg); }
+    50%  { transform: translateY(-10px) rotate(2deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+.time-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.55);
+}
+
+/* Snow overlay */
+.snow-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    overflow: hidden;
+}
+.snowflake {
+    position: absolute;
+    top: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 40%, rgba(255,255,255,0) 70%);
+    box-shadow: 0 0 6px rgba(255,255,255,0.35);
+    animation-name: snow-fall, snow-drift;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+}
+@keyframes snow-fall { 0% { top: -10px; } 100% { top: 105vh; } }
+@keyframes snow-drift { 0% { margin-left: 0; } 50% { margin-left: 12px; } 100% { margin-left: 0; } }
+
+/* Fireworks overlay */
+.fireworks-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+}
+.firework {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+}
+.firework .spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color, #ffd9a0);
+    transform: rotate(var(--angle)) translateY(0) scale(0.6);
+    opacity: 1;
+    animation: spark-explode 1200ms ease-out forwards;
+}
+@keyframes spark-explode {
+    to {
+        transform: rotate(var(--angle)) translateY(var(--distance)) scale(1);
+        opacity: 0;
+    }
+}
+
+.snow-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 40%, rgba(255,255,255,0) 70%);
+    box-shadow: 0 0 6px rgba(255,255,255,0.35);
+    animation-name: snow-fall, snow-drift;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+}
+
+@keyframes snow-fall {
+    0% { top: -10px; }
+    100% { top: 105vh; }
+}
+
+@keyframes snow-drift {
+    0% { margin-left: 0; }
+    50% { margin-left: 12px; }
+    100% { margin-left: 0; }
 }
