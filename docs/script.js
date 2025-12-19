@@ -65,23 +65,24 @@ function updateChristmasBanner() {
 
     const now = new Date();
     const currentYear = now.getFullYear();
-    let christmas = new Date(currentYear, 11, 25, 0, 0, 0);
-    if (now > christmas) {
-        christmas = new Date(currentYear + 1, 11, 25, 0, 0, 0);
-    }
-    const ms = christmas - now;
-    const daysLeft = Math.floor(ms / (1000 * 60 * 60 * 24));
+    const christmasEnd = new Date(currentYear, 11, 25, 23, 59, 59);
 
-    if (daysLeft <= 14) {
-        banner.classList.add("visible");
-        if (daysLeft > 0) {
-            textEl.innerText = `Giáng Sinh sắp đến: còn ${daysLeft} ngày!`;
-        } else {
-            textEl.innerText = "Giáng Sinh đã đến!";
-        }
-    } else {
+    if (now > christmasEnd) {
         banner.classList.remove("visible");
         textEl.innerText = "";
+        return;
+    }
+
+    // Tính ngày còn lại đến Giáng Sinh
+    const christmasStart = new Date(currentYear, 11, 25, 0, 0, 0);
+    const ms = christmasStart - now;
+    const daysLeft = Math.ceil(ms / (1000 * 60 * 60 * 24));
+
+    banner.classList.add("visible");
+    if (daysLeft > 0) {
+        textEl.innerText = `Giáng Sinh sắp đến: còn ${daysLeft} ngày!`;
+    } else {
+        textEl.innerText = "Giáng Sinh đã đến!";
     }
 }
 
@@ -187,8 +188,32 @@ function updateSeasonalEffects() {
     }
 }
 
+function initPetals() {
+    const container = document.getElementById("petal-container");
+    if (!container || container.childElementCount > 0) return;
+
+    const count = 60;
+    for (let i = 0; i < count; i++) {
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        const size = Math.round(10 + Math.random() * 12);
+        const left = Math.round(Math.random() * 100);
+        const fall = (10 + Math.random() * 12).toFixed(2);
+        const drift = (4 + Math.random() * 5).toFixed(2);
+        const delay = (Math.random() * 10).toFixed(2);
+        petal.style.width = size + "px";
+        petal.style.height = size + "px";
+        petal.style.left = left + "%";
+        petal.style.opacity = (0.5 + Math.random() * 0.4).toFixed(2);
+        petal.style.animationDuration = `${fall}s, ${drift}s`;
+        petal.style.animationDelay = `${delay}s, 0s`;
+        container.appendChild(petal);
+    }
+}
+
 setInterval(function() { updateCountdown(); updateChristmasBanner(); updateSeasonalEffects(); }, 1000);
 updateCountdown();
 updateChristmasBanner();
 updateSeasonalEffects();
+initPetals();
 initSnow();
